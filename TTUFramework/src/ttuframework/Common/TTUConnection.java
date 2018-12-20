@@ -5,6 +5,8 @@
  */
 package ttuframework.Common;
 
+import java.util.List;
+
 /**
  *
  * @author Tu Nguyen
@@ -22,11 +24,11 @@ public abstract class TTUConnection {
     
     public abstract void Open();
     public abstract void Close();
-    public abstract ICanAddWhere<T> Select<T>();
-    public abstract int Insert<T>(T obj);
-    public abstract int Update<T>(T obj);
-    public abstract int Delete<T>(T obj);
-    public abstract List<T> ExecuteQuery<T>(String query);
-    public abstract List<T> ExecuteQueryWithOutRelationship<T>(String query);
+    public abstract <T> ICanAddWhere<T> Select();
+    public abstract <T> int Insert(T obj);
+    public abstract <T> int Update(T obj);
+    public abstract <T> int Delete(T obj);
+    public abstract <T> List<T> ExecuteQuery(String query);
+    public abstract <T> List<T> ExecuteQueryWithOutRelationship(String query);
     public abstract int ExecuteNonQuery(String query);
 }

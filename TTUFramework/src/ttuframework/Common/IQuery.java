@@ -10,10 +10,9 @@ import java.util.List;
 /**
  *
  * @author Tu Nguyen
- * @param <T>
  */
-public interface IQuery<T> {
-    List<T> ExecuteQuery<T>();
-    List<T> ExecuteQueryWithoutRelationship<T>();
+public interface IQuery {
+    <T> List<T> ExecuteQuery();
+    <T> List<T> ExecuteQueryWithOutRelationship();
     int ExecuteNonQuery();
 }
