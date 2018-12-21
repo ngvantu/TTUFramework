@@ -8,6 +8,7 @@ package ttuframework.SQL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,12 +33,17 @@ public class TTUSQLConnection extends TTUConnection{
             
     @Override
     public void Open() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
     public void Close() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            if (!connection.isClosed())
+                connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(TTUSQLConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override

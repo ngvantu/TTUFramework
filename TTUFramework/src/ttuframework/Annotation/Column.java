@@ -5,6 +5,10 @@
  */
 package ttuframework.Annotation;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import ttuframework.Common.DataType;
 
 
@@ -12,6 +16,9 @@ import ttuframework.Common.DataType;
  *
  * @author Tu Nguyen
  */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+
 public @interface Column {
     public String Name();
     public DataType DataType();

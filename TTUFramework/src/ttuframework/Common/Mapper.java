@@ -5,11 +5,17 @@
  */
 package ttuframework.Common;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
+import static java.lang.reflect.Array.newInstance;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import ttuframework.Annotation.Column;
 import ttuframework.Annotation.ForeignKey;
 import ttuframework.Annotation.PrimaryKey;
@@ -19,18 +25,33 @@ import ttuframework.Annotation.Table;
  *
  * @author Tu Nguyen
  */
-public abstract class Mapper {
-    
-    protected abstract <T> void MapOneToMany(TTUConnection cnn, T obj);
-    protected abstract <T> void MapToOne(TTUConnection cnn, T obj);
+public abstract class Mapper<T> {
+    private Class<T> classOfT;
+    protected abstract <T> void MapOneToMany(TTUConnection cnn, ResultSet rs, T obj);
+    protected abstract <T> void MapToOne(TTUConnection cnn, ResultSet rs, T obj);
 
-    public <T> T MapWithRelationship(TTUConnection cnn) {
-        T obj = null;
+    // Map relattionship 
+    public <T> T MapWithRelationship(TTUConnection cnn, ResultSet rs) throws InstantiationException, IllegalAccessException {
+        T obj = (T) classOfT.newInstance();
         //Todo
-        return obj;
+        Annotation[] annotations = classOfT.getAnnotations();
+        // Cần lấy các thuộc tính của 1 bảng T
+        // VD: Bảng Student có ID, tên, điểm...
+        
+        /*
+        Object columnMapping = FirstOrDefault(annotations, classOfT);
+        if (columnMapping != null) {
+            Column column = (Column) columnMapping;
+               
+        }
+        */
+        
+        MapOneToMany(cnn, rs, obj);
+        MapToOne(cnn, rs, obj);
+        return obj;   
     }
     
-    public <T> T MapWithOutRelationship(TTUConnection cnn) {
+    public <T> T MapWithOutRelationship(TTUConnection cnn, ResultSet rs) {
         //Todo
         return null;
     }
