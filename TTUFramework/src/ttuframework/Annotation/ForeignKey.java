@@ -3,18 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ttuframework.Common;
+package ttuframework.Annotation;
 
 /**
  *
  * @author Tu Nguyen
  */
-public enum DatatType {
-    INT,
-    FLOAT,
-    CHAR,
-    NCHAR,
-    VARCHAR,
-    NVARCHAR,
-    BOOL
+public @interface ForeignKey {
+    public String RelationshipID();
+    public String Name();
+    public String References();
 }

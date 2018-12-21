@@ -6,7 +6,11 @@
 package ttuframework.SQL;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import ttuframework.Common.ICanAddWhere;
 import ttuframework.Common.TTUConnection;
 
@@ -18,8 +22,12 @@ public class TTUSQLConnection extends TTUConnection{
     
     Connection connection;
     public TTUSQLConnection(String connectionString) {
-        this.connectionString = connectionString;
-
+        try {
+            this.connectionString = connectionString;
+            this.connection = DriverManager.getConnection(connectionString);
+        } catch (SQLException ex) {
+            Logger.getLogger(TTUSQLConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
             
     @Override

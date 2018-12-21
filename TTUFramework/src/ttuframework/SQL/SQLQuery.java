@@ -14,18 +14,19 @@ import ttuframework.Common.IQuery;
  * @author Tu Nguyen
  */
 public class SQLQuery implements IQuery{
-
+    
     protected String connectionString;
-
+    protected Connection connection;
     protected String query;
     
     public SQLQuery(Connection cnn, String connectionString) {
         this.connectionString = connectionString;
+        this.connection = cnn;
     }    
        
     public SQLQuery(Connection cnn, String connectionString, String query) {
         this.connectionString = connectionString;
-        
+        this.connection = cnn;
         this.query = query;
     }
     

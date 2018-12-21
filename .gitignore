@@ -21,3 +21,6 @@
 
 # virtual machine crash logs
 hs_err_pid*
+/TTUFramework/dist/
+/TTUFramework/build/
+/TTUFramework/nbproject/
