@@ -32,9 +32,9 @@ public abstract class Mapper<T> {
 
     // Map relattionship 
     public <T> T MapWithRelationship(TTUConnection cnn, ResultSet rs) throws InstantiationException, IllegalAccessException {
-        T obj = (T) classOfT.newInstance();
+        T obj = (T) classOfT.getClass().newInstance();
         //Todo
-        Annotation[] annotations = classOfT.getAnnotations();
+        Annotation[] annotations = classOfT.getClass().getAnnotations();
         // Cần lấy các thuộc tính của 1 bảng T
         // VD: Bảng Student có ID, tên, điểm...
         
