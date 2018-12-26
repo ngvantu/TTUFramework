@@ -3,17 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ttuframework.SQL;
+package ttuframework.connection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import ttuframework.Common.ICanAddWhere;
-import ttuframework.Common.TTUConnection;
+
+import ttuframework.query.ICanAddWhere;
 
 /**
  *

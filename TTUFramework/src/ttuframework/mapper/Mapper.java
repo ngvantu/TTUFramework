@@ -3,23 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ttuframework.Common;
+package ttuframework.mapper;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Array;
-import static java.lang.reflect.Array.newInstance;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import ttuframework.Annotation.Column;
-import ttuframework.Annotation.ForeignKey;
-import ttuframework.Annotation.PrimaryKey;
-import ttuframework.Annotation.Table;
+import ttuframework.annotation.Column;
+import ttuframework.annotation.ForeignKey;
+import ttuframework.annotation.PrimaryKey;
+import ttuframework.annotation.Table;
+import ttuframework.connection.TTUConnection;
 
 /**
  *

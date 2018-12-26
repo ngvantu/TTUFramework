@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ttuframework.Common;
+package ttuframework.connection;
 
 import java.util.List;
+
+import ttuframework.query.ICanAddWhere;
 
 /**
  *
