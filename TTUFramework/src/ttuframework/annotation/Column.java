@@ -18,9 +18,9 @@ import java.lang.annotation.Target;
  * @author Tu Nguyen
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Target(ElementType.FIELD)
 
 public @interface Column {
-    public String Name();
-    public DataType DataType();
+    public String name();
+    public DataType type();
 }

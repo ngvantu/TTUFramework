@@ -5,13 +5,10 @@
  */
 package ttuframework.query;
 
-import java.util.List;
-
 /**
  *
  * @author Tu Nguyen
  */
-public interface ICanAddHavingOrRun<T> {
-    ICanAddGroupBy<T> Having(String condition);
-    List<T> Run();
+public interface QueryWhere<T> {
+    QueryHaving<T> addWhere(String condition);
 }

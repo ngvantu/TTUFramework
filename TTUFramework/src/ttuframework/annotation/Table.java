@@ -19,6 +19,6 @@ import java.lang.annotation.Target;
 
 public @interface Table {
     
-    public String Name();
+    public String name();
     
 }

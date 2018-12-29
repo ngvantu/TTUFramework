@@ -11,8 +11,6 @@ import java.util.List;
  *
  * @author Tu Nguyen
  */
-public interface IQuery {
-    <T> List<T> ExecuteQuery();
-    <T> List<T> ExecuteQueryWithOutRelationship();
-    int ExecuteNonQuery();
+public interface QueryRun<T> {
+    List<T> run();
 }

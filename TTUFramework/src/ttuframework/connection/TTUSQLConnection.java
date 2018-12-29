@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import ttuframework.query.ICanAddWhere;
+import ttuframework.query.QueryWhere;
 
 /**
  *
@@ -31,12 +31,12 @@ public class TTUSQLConnection extends TTUConnection{
     }
             
     @Override
-    public void Open() {
+    public void open() {
         
     }
 
     @Override
-    public void Close() {
+    public void close() {
         try {
             if (!connection.isClosed())
                 connection.close();
@@ -46,37 +46,37 @@ public class TTUSQLConnection extends TTUConnection{
     }
 
     @Override
-    public <T> ICanAddWhere<T> Select() {
+    public <T> QueryWhere<T> select() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public <T> int Insert(T obj) {
+    public <T> int insert(T obj) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public <T> int Update(T obj) {
+    public <T> int update(T obj) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public <T> int Delete(T obj) {
+    public <T> int delete(T obj) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public <T> List<T> ExecuteQuery(String query) {
+    public <T> List<T> executeQuery(String query) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public <T> List<T> ExecuteQueryWithOutRelationship(String query) {
+    public <T> List<T> executeQueryWithOutRelationship(String query) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public int ExecuteNonQuery(String query) {
+    public int executeNonQuery(String query) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

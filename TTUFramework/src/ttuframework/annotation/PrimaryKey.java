@@ -15,9 +15,9 @@ import java.lang.annotation.Target;
  * @author Tu Nguyen
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Target(ElementType.FIELD)
 
 public @interface PrimaryKey {
-    public String Name();
-    public boolean AutoID();
+    public String name();
+    public boolean autoId();
 }

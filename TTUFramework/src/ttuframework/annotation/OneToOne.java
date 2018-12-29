@@ -15,9 +15,9 @@ import java.lang.annotation.Target;
  * @author Tu Nguyen
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Target(ElementType.FIELD)
 
 public @interface OneToOne {
-    public String RelationshipID();
-    public String TableName();
+    public String relationshipId();
+    public String tableName();
 }

@@ -9,6 +9,6 @@ package ttuframework.query;
  *
  * @author Tu Nguyen
  */
-public interface ICanAddGroupBy<T> {
-    ICanRun<T> GroupBy(String columnNames);
+public interface QueryGroupBy<T> {
+    QueryRun<T> addGroupBy(String columnName);
 }

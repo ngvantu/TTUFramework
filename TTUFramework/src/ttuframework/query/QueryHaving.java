@@ -11,6 +11,7 @@ import java.util.List;
  *
  * @author Tu Nguyen
  */
-public interface ICanRun<T> {
-    List<T> Run();
+public interface QueryHaving<T> {
+    QueryGroupBy<T> addHaving(String condition);
+    List<T> run();
 }

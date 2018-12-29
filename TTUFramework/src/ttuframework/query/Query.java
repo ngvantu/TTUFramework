@@ -5,10 +5,14 @@
  */
 package ttuframework.query;
 
+import java.util.List;
+
 /**
  *
  * @author Tu Nguyen
  */
-public interface ICanAddWhere<T> {
-    ICanAddHavingOrRun<T> Where(String condition);
+public interface Query {
+    <T> List<T> executeQuery();
+    <T> List<T> executeQueryWithOutRelationship();
+    int executeNonQuery();
 }

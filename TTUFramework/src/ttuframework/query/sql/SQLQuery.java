@@ -16,13 +16,13 @@ import java.util.logging.Logger;
 
 import ttuframework.connection.TTUSQLConnection;
 import ttuframework.mapper.SQLMapper;
-import ttuframework.query.IQuery;
+import ttuframework.query.Query;
 
 /**
  *
  * @author Tu Nguyen
  */
-public class SQLQuery implements IQuery{
+public class SQLQuery implements Query{
     
     protected String connectionString;
     protected Connection connection;
@@ -40,8 +40,8 @@ public class SQLQuery implements IQuery{
     }
     
     @Override
-    public <T> List<T> ExecuteQuery() {
-        List<T> res = new ArrayList();
+    public <T> List<T> executeQuery() {
+        List<T> res = new ArrayList<>();
         TTUSQLConnection cnn = new TTUSQLConnection(connectionString);
         SQLMapper mapper = new SQLMapper();
         
@@ -58,12 +58,12 @@ public class SQLQuery implements IQuery{
     }
 
     @Override
-    public <T> List<T> ExecuteQueryWithOutRelationship() {
+    public <T> List<T> executeQueryWithOutRelationship() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public int ExecuteNonQuery() {
+    public int executeNonQuery() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

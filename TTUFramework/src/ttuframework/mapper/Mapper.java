@@ -58,7 +58,7 @@ public abstract class Mapper<T> {
         // Todo
         Table table = (Table) FirstOrDefault(tables, Table.class);
         if (table != null) {
-            return table.Name();
+            return table.name();
         }
         return "";
     }
@@ -89,7 +89,7 @@ public abstract class Mapper<T> {
     
     public Column FindColumn(String name, HashMap<Column, Object> listColumns) {
         for (Column column : listColumns.keySet()) {
-            if (column.Name().equals(name)) {
+            if (column.name().equals(name)) {
                 return column;
             }
         }
@@ -98,7 +98,7 @@ public abstract class Mapper<T> {
     
     public Column FindColumn(String name, List<Column> listColumns) {
         for (Column column : listColumns) {
-            if (column.Name().equals(name)) {
+            if (column.name().equals(name)) {
                 return column;
             }
         }

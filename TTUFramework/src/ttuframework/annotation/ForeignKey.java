@@ -15,10 +15,10 @@ import java.lang.annotation.Target;
  * @author Tu Nguyen
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Target(ElementType.FIELD)
 
 public @interface ForeignKey {
-    public String RelationshipID();
-    public String Name();
-    public String References();
+    public String relationshipId();
+    public String name();
+    public String references();
 }
