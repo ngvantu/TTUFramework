@@ -1,6 +1,6 @@
 package ttu.framework.client.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 import ttuframework.annotation.Column;
 import ttuframework.annotation.PrimaryKey;
@@ -19,8 +19,9 @@ public class Student {
 	@Column(name="gender",type=DataType.VARCHAR)
 	private String gender;
 	
-//	@Column(name="dob", type=DataType.DATE)
-//	private Date dob;
+	@Column(name="dob", type=DataType.DATE)
+	private Date dob;
+	
 
 	public int getId() {
 		return id;
@@ -46,13 +47,13 @@ public class Student {
 		this.gender = gender;
 	}
 
-//	public Date getDob() {
-//		return dob;
-//	}
-//
-//	public void setDob(Date dob) {
-//		this.dob = dob;
-//	}
+	public Date getDob() {
+		return dob;
+	}
+
+	public void setDob(Date dob) {
+		this.dob = dob;
+	}
 
 	public Student() {
 		super();

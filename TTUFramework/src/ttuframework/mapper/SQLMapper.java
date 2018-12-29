@@ -6,6 +6,7 @@
 package ttuframework.mapper;
 
 import java.sql.ResultSet;
+import java.util.Properties;
 
 import ttuframework.connection.TTUConnection;
 
@@ -22,13 +23,15 @@ public class SQLMapper extends Mapper{
 	}
 
 	@Override
-	protected <T> void mapOneToMany(TTUConnection cnn, ResultSet rs, T obj) {
+	protected <T> Properties mapOneToMany(TTUConnection cnn, ResultSet rs, T obj) {
+		return null;
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	protected <T> void mapOneToOne(TTUConnection cnn, ResultSet rs, T obj) {
+	protected <T> Properties mapOneToOne(TTUConnection cnn, ResultSet rs, T obj) {
+		return null;
 		// TODO Auto-generated method stub
 		
 	}
