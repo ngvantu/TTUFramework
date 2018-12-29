@@ -5,7 +5,6 @@
  */
 package ttuframework.mapper;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -65,42 +64,42 @@ public abstract class Mapper{
     	  return obj;
     }
     
-    public <T> String GetTableName() {
+    public <T> String getTableName() {
         Object[] tables = null;
         //Object[] tables = <T>.getClass().getAnnotations();
         // Todo
-        Table table = (Table) FirstOrDefault(tables, Table.class);
+        Table table = (Table) firstOrDefault(tables, Table.class);
         if (table != null) {
             return table.name();
         }
         return "";
     }
     
-    public <T> List<PrimaryKey> GetPrimaryKeys() {
+    public <T> List<PrimaryKey> getPrimaryKeys() {
         List<PrimaryKey> primaryKeys = new ArrayList<>();
         // Todo
         return primaryKeys;
     }
     
-    public <T> List<ForeignKey> GetForeignKeys(String relationshipID) {
+    public <T> List<ForeignKey> getForeignKeys(String relationshipID) {
         List<ForeignKey> foreignKeys = new ArrayList<>();
         // Todo
         return foreignKeys;
     }
     
-    public <T> List<Column> GetColumns() {
+    public <T> List<Column> getColumns() {
         List<Column> columns = new ArrayList<>();
         // Todo
         return columns;
     }
     
-    public <T> HashMap<Column, Object> GetColumnValues(T obj) {
+    public <T> HashMap<Column, Object> getColumnValues(T obj) {
         HashMap<Column, Object> listColumnValues = new HashMap<>();
         // Todo
         return listColumnValues;
     }
     
-    public Column FindColumn(String name, HashMap<Column, Object> listColumns) {
+    public Column findColumn(String name, HashMap<Column, Object> listColumns) {
         for (Column column : listColumns.keySet()) {
             if (column.name().equals(name)) {
                 return column;
@@ -109,7 +108,7 @@ public abstract class Mapper{
         return null;
     }
     
-    public Column FindColumn(String name, List<Column> listColumns) {
+    public Column findColumn(String name, List<Column> listColumns) {
         for (Column column : listColumns) {
             if (column.name().equals(name)) {
                 return column;
@@ -118,7 +117,7 @@ public abstract class Mapper{
         return null;
     }
     
-    protected Object FirstOrDefault(Object[] annotation, Class c) {
+    protected Object firstOrDefault(Object[] annotation, Class c) {
         for (Object a : annotation) {
             if (a.getClass() == c) {
                 return a;
@@ -127,7 +126,7 @@ public abstract class Mapper{
         return null;
     }
     
-    protected List<Object> GetAll(Object[] annotation, Class c) {
+    protected List<Object> getAll(Object[] annotation, Class c) {
         List<Object> listObj = new ArrayList();
         for (Object a : annotation) {
             if (a.getClass() == c) {
@@ -137,7 +136,7 @@ public abstract class Mapper{
         return listObj;
     }
     
-    public Object GetFirst(Iterable source) {
+    public Object getFirst(Iterable source) {
         Iterator it = source.iterator();
         if (it.hasNext()) {
             return it.next();
