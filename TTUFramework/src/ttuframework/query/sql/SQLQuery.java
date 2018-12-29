@@ -49,9 +49,13 @@ public class SQLQuery implements Query{
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
-                
+                res.add(mapper.mapWithRelationship(cnn, rs));
             }
+            rs.close();
+            stmt.close();
         } catch (SQLException ex) {
+            Logger.getLogger(SQLQuery.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
             Logger.getLogger(SQLQuery.class.getName()).log(Level.SEVERE, null, ex);
         }
         return res;
@@ -59,7 +63,24 @@ public class SQLQuery implements Query{
 
     @Override
     public <T> List<T> executeQueryWithOutRelationship() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<T> res = new ArrayList<>();
+        TTUSQLConnection cnn = new TTUSQLConnection(connectionString);
+        SQLMapper mapper = new SQLMapper(null);
+
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                res.add(mapper.mapWithOutRelationship(rs));
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(SQLQuery.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(SQLQuery.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return res;
     }
 
     @Override
