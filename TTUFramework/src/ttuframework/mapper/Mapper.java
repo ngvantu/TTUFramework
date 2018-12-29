@@ -132,9 +132,8 @@ public abstract class Mapper{
         return null;
     }
     
-    public <T> List<T> getAllAnnotation(Class annotaionClass) {
+    public <T> List<T> getAllAnnotation(Field[] fields, Class annotaionClass) {
         List<T> listObj = new ArrayList();
-        Field[] fields = annotaionClass.getDeclaredFields();
         for (Field field : fields) {
             // get annotation of a field if it is similar to this annotation class
             // return null if is dissimilar  

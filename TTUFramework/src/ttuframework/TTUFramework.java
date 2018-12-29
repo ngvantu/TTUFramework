@@ -46,9 +46,10 @@ public class TTUFramework {
                
                 System.out.println(student.getId() + "  " + student.getName());
                 Field[] fields = Student.class.getDeclaredFields();
-                List<Field> w = m.getAll(fields, Column.class);
+                List<Column> w = m.getAllAnnotation(fields, Column.class);
                 Method[] methods = Student.class.getMethods();
         
+        // set breakpoint at below line to watch data test
         System.out.println("Ok");
     }
     
