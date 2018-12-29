@@ -67,10 +67,9 @@ public abstract class Mapper{
     }
     
     public <T> String getTableName() {
-        Object[] tables = null;
-        //Object[] tables = <T>.getClass().getAnnotations();
-        // Todo
-        Table table = (Table) firstOrDefault(tables, Table.class);
+        Field[] fields = classOfT.getDeclaredFields();
+
+        Table table = firstOrDefault(fields, Table.class);
         if (table != null) {
             return table.name();
         }
@@ -79,33 +78,58 @@ public abstract class Mapper{
     
     public <T> List<PrimaryKey> getPrimaryKeys() {
         List<PrimaryKey> primaryKeys = new ArrayList<>();
-        // Todo
-        return primaryKeys;
+        Field[] fields = classOfT.getDeclaredFields();
+        for (Field field : fields) {
+            PrimaryKey primaryKey = field.getAnnotation(PrimaryKey.class);
+            if (primaryKey != null) {
+                primaryKeys.add(primaryKey);
+            }
+        }
+        return primaryKeys.size() > 0 ? primaryKeys : null;
     }
     
     public <T> List<ForeignKey> getForeignKeys(String relationshipID) {
         List<ForeignKey> foreignKeys = new ArrayList<>();
-        // Todo
-        return foreignKeys;
+        Field[] fields = classOfT.getDeclaredFields();
+        for (Field field : fields) {
+            ForeignKey foreignKey = field.getAnnotation(ForeignKey.class);
+            if (foreignKey != null) {
+                foreignKeys.add(foreignKey);
+            }
+        }
+        return foreignKeys.size() > 0 ? foreignKeys : null;
     }
     
+    // get all column of a table annotation class
     public <T> List<Column> getColumns() {
         List<Column> columns = new ArrayList<>();
         Field[] fields = classOfT.getDeclaredFields();
         for (Field field : fields) {
-            Annotation a = field.getAnnotation(Column.class);
-
+            Column columnMapping = field.getAnnotation(Column.class);
+            if (columnMapping != null) {
+                columns.add(columnMapping);
+            }
         }
-        return columns;
+        
+        return columns.size() > 0 ? columns : null;
     }
     
-    public <T> HashMap<Column, Object> getColumnValues(T obj) {
-        HashMap<Column, Object> listColumnValues = new HashMap<>();
-        // Todo
-        return listColumnValues;
+    public <T> HashMap<Column, T> getColumnValues(T obj) {
+        HashMap<Column, T> listColumnValues = new HashMap<>();
+        Field[] fields = classOfT.getDeclaredFields();
+        Properties prop = new Properties();
+
+        for (Field field : fields) {
+            Column columnMapping = field.getAnnotation(Column.class);
+            if (columnMapping != null) {
+                listColumnValues.put(columnMapping, obj);
+            }
+        }
+        
+        return listColumnValues.size() > 0 ? listColumnValues : null;
     }
     
-    public Column findColumn(String name, HashMap<Column, Object> listColumns) {
+    public <T> Column findColumn(String name, HashMap<Column, T> listColumns) {
         for (Column column : listColumns.keySet()) {
             if (column.name().equals(name)) {
                 return column;
@@ -123,10 +147,12 @@ public abstract class Mapper{
         return null;
     }
     
-    protected Object firstOrDefault(Object[] fields, Class c) {
-        for (Object a : fields) {
-            if (a.getClass() == c) {
-                return a;
+    // get value of annotaion class of the first field have similar annotation class
+    protected <T> T firstOrDefault(Field[] fields, Class annotaionClass) {
+        for (Field field : fields) {
+            T annotation = (T)field.getAnnotation(annotaionClass);
+            if (annotation != null) {
+                return annotation;
             }
         }
         return null;
