@@ -6,15 +6,19 @@
 package ttuframework.mapper;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
+
 import ttuframework.annotation.Column;
 import ttuframework.annotation.ForeignKey;
 import ttuframework.annotation.PrimaryKey;
 import ttuframework.annotation.Table;
+import ttuframework.common.Converter;
 import ttuframework.connection.TTUConnection;
 
 /**
@@ -23,14 +27,11 @@ import ttuframework.connection.TTUConnection;
  */
 public abstract class Mapper<T> {
     private Class<T> classOfT;
-    protected abstract <T> void MapOneToMany(TTUConnection cnn, ResultSet rs, T obj);
-    protected abstract <T> void MapToOne(TTUConnection cnn, ResultSet rs, T obj);
+    protected abstract void mapOneToMany(TTUConnection cnn, ResultSet rs, T obj);
+    protected abstract void mapOneToOne(TTUConnection cnn, ResultSet rs, T obj);
 
-    // Map relattionship 
-    public <T> T MapWithRelationship(TTUConnection cnn, ResultSet rs) throws InstantiationException, IllegalAccessException {
-        T obj = (T) classOfT.getClass().newInstance();
-        //Todo
-        Annotation[] annotations = classOfT.getClass().getAnnotations();
+    public T MapWithRelationship(TTUConnection cnn, ResultSet rs) throws Exception{
+        T obj = (T) classOfT.newInstance();
         // Cần lấy các thuộc tính của 1 bảng T
         // VD: Bảng Student có ID, tên, điểm...
         
@@ -42,14 +43,21 @@ public abstract class Mapper<T> {
         }
         */
         
-        MapOneToMany(cnn, rs, obj);
-        MapToOne(cnn, rs, obj);
+//        MapOneToMany(cnn, rs, obj);
+//        MapToOne(cnn, rs, obj);
         return obj;   
     }
     
-    public <T> T MapWithOutRelationship(TTUConnection cnn, ResultSet rs) {
-        //Todo
-        return null;
+    public T mapWithOutRelationship(TTUConnection cnn, ResultSet rs) throws Exception {
+    	  T obj = (T) classOfT.newInstance();
+    	  Field[] fields = classOfT.getDeclaredFields();
+    	  Properties prop = new Properties();
+    	  for (Field field : fields){
+    		  String attr = field.getName();
+    		  prop.setProperty(attr, rs.getString(attr));
+    	  }
+    	  obj = Converter.propToClass(prop, classOfT);
+    	  return obj;
     }
     
     public <T> String GetTableName() {
