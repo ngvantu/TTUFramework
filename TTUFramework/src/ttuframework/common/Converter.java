@@ -7,7 +7,8 @@ import com.google.gson.Gson;
 public class Converter {
 	
 	@SuppressWarnings("unchecked")
-	public static <T> T propToClass(Properties prop, Class<?> cls){
-		return (T) new Gson().fromJson(prop.toString(), cls);
+	public static <T> T propToClass(Properties prop, Class<?> cls) throws Exception{
+		Gson gson = new Gson();
+		return (T) gson.fromJson(gson.toJson(prop), cls);
 	}
 }

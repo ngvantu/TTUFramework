@@ -16,5 +16,6 @@ public enum DataType {
     NCHAR,
     VARCHAR,
     NVARCHAR,
-    BOOL
+    BOOL,
+    DATE
 }

@@ -25,12 +25,12 @@ import ttuframework.connection.TTUConnection;
  *
  * @author Tu Nguyen
  */
-public abstract class Mapper<T> {
-    private Class<T> classOfT;
-    protected abstract void mapOneToMany(TTUConnection cnn, ResultSet rs, T obj);
-    protected abstract void mapOneToOne(TTUConnection cnn, ResultSet rs, T obj);
+public abstract class Mapper{
+    private Class<?> classOfT;
+    protected abstract <T> void mapOneToMany(TTUConnection cnn, ResultSet rs, T obj);
+    protected abstract <T> void mapOneToOne(TTUConnection cnn, ResultSet rs, T obj);
 
-    public T MapWithRelationship(TTUConnection cnn, ResultSet rs) throws Exception{
+    public <T> T MapWithRelationship(TTUConnection cnn, ResultSet rs) throws Exception{
         T obj = (T) classOfT.newInstance();
         // Cần lấy các thuộc tính của 1 bảng T
         // VD: Bảng Student có ID, tên, điểm...
@@ -48,7 +48,12 @@ public abstract class Mapper<T> {
         return obj;   
     }
     
-    public T mapWithOutRelationship(TTUConnection cnn, ResultSet rs) throws Exception {
+    public Mapper(Class<?> cls){
+    	classOfT = cls;
+    }
+    
+    @SuppressWarnings("unchecked")
+	public <T> T mapWithOutRelationship(ResultSet rs) throws Exception {
     	  T obj = (T) classOfT.newInstance();
     	  Field[] fields = classOfT.getDeclaredFields();
     	  Properties prop = new Properties();

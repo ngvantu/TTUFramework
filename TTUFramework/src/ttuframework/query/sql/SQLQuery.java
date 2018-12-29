@@ -43,7 +43,7 @@ public class SQLQuery implements Query{
     public <T> List<T> executeQuery() {
         List<T> res = new ArrayList<>();
         TTUSQLConnection cnn = new TTUSQLConnection(connectionString);
-        SQLMapper mapper = new SQLMapper();
+        SQLMapper mapper = new SQLMapper(null);
         
         try {
             Statement stmt = connection.createStatement();
