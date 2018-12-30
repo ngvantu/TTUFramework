@@ -45,11 +45,11 @@ public abstract class TTUConnection {
 
     public abstract void open();
     public abstract void close();
-    public abstract <T> QueryWhere<T> select();
+    public abstract <T> QueryWhere<T> select(Class<?> clazz);
     public abstract <T> int insert(T obj);
     public abstract <T> int update(T obj);
     public abstract <T> int delete(T obj);
-    public abstract <T> List<T> executeQuery(String query);
-    public abstract <T> List<T> executeQueryWithOutRelationship(String query);
-    public abstract int executeNonQuery(String query);
+    public abstract <T> List<T> executeQuery(String queryString);
+    public abstract <T> List<T> executeQueryWithOutRelationship(String queryString);
+    public abstract int executeNonQuery(String queryString);
 }

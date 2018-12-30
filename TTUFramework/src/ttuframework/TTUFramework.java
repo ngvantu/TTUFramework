@@ -18,8 +18,11 @@ import java.util.Properties;
 import ttuframework.annotation.Column;
 import ttuframework.annotation.Table;
 import ttuframework.common.Converter;
+import ttuframework.connection.TTUConnection;
+import ttuframework.connection.TTUSQLConnection;
 import ttuframework.mapper.Mapper;
 import ttuframework.mapper.SQLMapper;
+import ttuframework.query.QueryWhere;
 
 /**
  *
@@ -30,25 +33,19 @@ public class TTUFramework {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws SQLException, Exception {
+    public static void main(String[] args) throws SQLException  {
         // TODO code application logic here
         String url = "jdbc:mysql://localhost:3306/ttuframework";
-		String username = "root";
-		String password = "123456";
-		Connection conn = DriverManager.getConnection(url, username, password);
-		Statement sttm = conn.createStatement();
-		ResultSet rs = sttm.executeQuery("select * from student");
-                Student student = new Student();
-                Mapper m = new SQLMapper(Student.class);
-		while(rs.next()){
-                    student = m.mapWithOutRelationship(rs);
-		}
+	String username = "root";
+	String password = "123456";
                
-                System.out.println(student.getId() + "  " + student.getName());
-                Field[] fields = Student.class.getDeclaredFields();
-                List<Column> w = m.getAllAnnotation(fields, Column.class);
-                Method[] methods = Student.class.getMethods();
-        
+        TTUConnection cnn = new TTUSQLConnection(url, username, password);
+        cnn.open();
+        List<Student> students = cnn.executeQueryWithOutRelationship("select * from student");
+        for (Student student : students) {
+            System.out.println(student.getId() + "  " + student.getName());
+        }
+
         // set breakpoint at below line to watch data test
         System.out.println("Ok");
     }

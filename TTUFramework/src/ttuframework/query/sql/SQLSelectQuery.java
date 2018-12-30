@@ -23,7 +23,7 @@ public class SQLSelectQuery<T> extends SQLQuery implements QueryWhere<T>, QueryG
     private <T> SQLSelectQuery(Connection cnn, String connectionString, Class<?> cls) {
         super(cnn, connectionString);
         SQLMapper mapper = new SQLMapper(cls);
-        List<Column> listColumns =mapper.getColumns();
+        List<Column> listColumns = mapper.getColumns();
         
         query = "SELECT";
         for (Column column : listColumns) {

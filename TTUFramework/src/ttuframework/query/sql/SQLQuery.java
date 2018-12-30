@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import ttuframework.Student;
 
 import ttuframework.connection.TTUSQLConnection;
 import ttuframework.mapper.SQLMapper;
@@ -42,8 +43,14 @@ public class SQLQuery implements Query{
     @Override
     public <T> List<T> executeQuery() {
         List<T> res = new ArrayList<>();
-        TTUSQLConnection cnn = new TTUSQLConnection(connectionString);
-        SQLMapper mapper = new SQLMapper(null);
+        TTUSQLConnection cnn = null;
+        try {
+            cnn = new TTUSQLConnection(connectionString);
+        } catch (SQLException ex) {
+            Logger.getLogger(SQLQuery.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        // set static data, change after
+        SQLMapper mapper = new SQLMapper(Student.class);
         
         try {
             Statement stmt = connection.createStatement();
@@ -64,9 +71,10 @@ public class SQLQuery implements Query{
     @Override
     public <T> List<T> executeQueryWithOutRelationship() {
         List<T> res = new ArrayList<>();
-        TTUSQLConnection cnn = new TTUSQLConnection(connectionString);
-        SQLMapper mapper = new SQLMapper(null);
-
+        
+        // set static data, change after
+        SQLMapper mapper = new SQLMapper(Student.class);
+        
         try {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
@@ -85,7 +93,12 @@ public class SQLQuery implements Query{
 
     @Override
     public int executeNonQuery() {
-        TTUSQLConnection cnn = new TTUSQLConnection(connectionString);
+        TTUSQLConnection cnn = null;
+        try {
+            cnn = new TTUSQLConnection(connectionString);
+        } catch (SQLException ex) {
+            Logger.getLogger(SQLQuery.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return cnn.executeNonQuery(query);
     }
     
