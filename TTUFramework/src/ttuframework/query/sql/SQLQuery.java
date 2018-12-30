@@ -85,7 +85,8 @@ public class SQLQuery implements Query{
 
     @Override
     public int executeNonQuery() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TTUSQLConnection cnn = new TTUSQLConnection(connectionString);
+        return cnn.executeNonQuery(query);
     }
     
 }

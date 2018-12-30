@@ -10,5 +10,5 @@ package ttuframework.query;
  * @author Tu Nguyen
  */
 public interface QueryGroupBy<T> {
-    QueryRun<T> addGroupBy(String columnName);
+    QueryRun<T> addGroupBy(String columnNames);
 }
