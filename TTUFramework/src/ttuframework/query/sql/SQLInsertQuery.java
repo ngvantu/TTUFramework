@@ -26,7 +26,7 @@ public class SQLInsertQuery<T> extends SQLQuery{
         List<PrimaryKey> primaryKeys = mapper.getPrimaryKeys();
         HashMap<Column, T> listColumnValues = mapper.getColumnValues(obj);
         
-        if (!listColumnValues.isEmpty()) {
+        if (listColumnValues != null) {
             String columnStr = "";
             String valueStr = "";
             
