@@ -21,18 +21,22 @@ import ttuframework.query.QueryWhere;
 public class TTUSQLConnection extends TTUConnection{
     
     Connection connection;
-    public TTUSQLConnection(String connectionString) {
-        try {
-            this.connectionString = connectionString;
-            this.connection = DriverManager.getConnection(connectionString);
-        } catch (SQLException ex) {
-            Logger.getLogger(TTUSQLConnection.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public TTUSQLConnection(String connectionString) throws SQLException {
+        this.connectionString = connectionString;
+        this.connection = DriverManager.getConnection(connectionString);
+
     }
-            
+    
+    public TTUSQLConnection(String connectionString, String username, String password) throws SQLException {
+        this.connectionString = connectionString;
+        this.username = username;
+        this.password = password;
+        this.connection = DriverManager.getConnection(connectionString, username, password);
+    }
+    
     @Override
     public void open() {
-        
+
     }
 
     @Override
