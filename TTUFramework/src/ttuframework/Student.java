@@ -7,6 +7,8 @@ package ttuframework;
 
 import java.util.Date;
 import ttuframework.annotation.Column;
+import ttuframework.annotation.ForeignKey;
+import ttuframework.annotation.ManyToOne;
 import ttuframework.annotation.PrimaryKey;
 import ttuframework.annotation.Table;
 import ttuframework.common.DataType;
@@ -30,6 +32,9 @@ public class Student {
 	@Column(name="dob", type=DataType.DATE)
 	private Date dob;
 	
+	@ForeignKey(name="group", references="sclass", relationshipId="id")
+	@ManyToOne(tableName="sclass",relationshipId="id")
+	private String group;
 
 	public int getId() {
 		return id;
@@ -66,4 +71,9 @@ public class Student {
 	public Student() {
 		super();
 	}
+	
+	public String toString(){
+		return String.format("{id=%s, name=%s, gender=%s, dob=%s, class=%s}", id,name, gender, dob, group);
+	}
+	
 }
