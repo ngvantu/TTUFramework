@@ -5,17 +5,23 @@
  */
 package ttuframework.mapper;
 
+import java.beans.BeanInfo;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ttuframework.annotation.Column;
 import ttuframework.annotation.ManyToOne;
 import ttuframework.annotation.OneToMany;
 import ttuframework.annotation.PrimaryKey;
+import ttuframework.annotation.Table;
 import ttuframework.common.Converter;
 
 /**
@@ -92,6 +98,56 @@ public abstract class Mapper{
 		for (Field field : fields)
 			if (field.getAnnotation(PrimaryKey.class)!= null)
 				return field;
+		return null;
+	}
+	
+	public String getTableName(){
+		return classOfT.getAnnotation(Table.class).name();
+	}
+	
+	public String getPrimaryName(){
+		return getPrimaryKey(classOfT).getName();
+	}
+	
+	public <T> String getPrimaryValue(T obj) {
+		Map<String, Object> map = getDataClass(obj);
+		return map.get(getPrimaryName()).toString();
+	}
+
+	public List<String> getColumnNames() {
+		List<String> result = new ArrayList<>();
+ 		Field[] fields = classOfT.getDeclaredFields();
+		for (Field field : fields){
+			Column column = (Column) field.getAnnotation(Column.class);
+			if ( column != null)
+				result.add(field.getName());
+		}
+		return result;
+	}
+
+	public <T> List<String> getColumnValues(T obj) throws Exception {
+		Map<String, Object> map = getDataClass(obj);
+		List<String> result = new ArrayList<>();
+		List<String> columns = getColumnNames();
+		for (String string : columns) {
+			result.add("'" + map.get(string).toString()+ "'");
+		}
+		return result;
+	}
+	
+	public <T> Map<String, Object> getDataClass(T obj){
+		try{
+			Map<String, Object> result = new HashMap<String, Object>(); 
+			 BeanInfo info = Introspector.getBeanInfo(obj.getClass());
+			 for (PropertyDescriptor pd : info.getPropertyDescriptors()) {
+		        Method reader = pd.getReadMethod();
+		        if (reader != null)
+		            result.put(pd.getName(), reader.invoke(obj));
+		    }
+		    return result;
+		}
+		catch (Exception e) {
+		}
 		return null;
 	}
 }

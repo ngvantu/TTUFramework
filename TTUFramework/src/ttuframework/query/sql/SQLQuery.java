@@ -9,13 +9,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import ttuframework.Student;
 
-import ttuframework.connection.TTUSQLConnection;
+import ttuframework.mapper.Mapper;
 import ttuframework.mapper.SQLMapper;
 import ttuframework.query.Query;
 
@@ -25,81 +23,64 @@ import ttuframework.query.Query;
  */
 public class SQLQuery implements Query{
     
-    protected String connectionString;
     protected Connection connection;
     protected String query;
+    private Class<?> cls;
     
-    public SQLQuery(Connection cnn, String connectionString) {
-        this.connectionString = connectionString;
-        this.connection = cnn;
-    }    
-       
-    public SQLQuery(Connection cnn, String connectionString, String query) {
-        this.connectionString = connectionString;
-        this.connection = cnn;
+    public SQLQuery(Connection cnn, String query, Class<?> cls) {
         this.query = query;
+        this.connection = cnn;
+        this.cls = cls;
     }
+    
+    public SQLQuery(Connection cnn, String query) {
+        this.query = query;
+        this.connection = cnn;
+        this.cls = null;
+    } 
     
     @Override
     public <T> List<T> executeQuery() {
-        List<T> res = new ArrayList<>();
-        TTUSQLConnection cnn = null;
-        try {
-            cnn = new TTUSQLConnection(connectionString);
-        } catch (SQLException ex) {
-            Logger.getLogger(SQLQuery.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        // set static data, change after
-        SQLMapper mapper = new SQLMapper(Student.class);
-        
-        try {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                res.add(mapper.mapWithRelationship(cnn, rs));
-            }
-            rs.close();
-            stmt.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(SQLQuery.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(SQLQuery.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return res;
+    	try {
+    		Statement stm = connection.createStatement();
+    		ResultSet rs = stm.executeQuery(query);
+    		Mapper mapper = new SQLMapper(cls);
+    		List<T> listOfT = mapper.mapWithRelationship(connection, rs);
+    		rs.close();
+    		stm.close();
+    		return listOfT;
+    	}catch (Exception e) {
+    		Logger.getLogger(SQLQuery.class.getName()).log(Level.SEVERE, null, e);
+		}
+    	return null;
     }
 
     @Override
     public <T> List<T> executeQueryWithOutRelationship() {
-        List<T> res = new ArrayList<>();
-        
-        // set static data, change after
-        SQLMapper mapper = new SQLMapper(Student.class);
-        
-        try {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                res.add(mapper.mapWithOutRelationship(rs));
-            }
-            rs.close();
-            stmt.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(SQLQuery.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(SQLQuery.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return res;
+    	try {
+    		Statement stm = connection.createStatement();
+    		ResultSet rs = stm.executeQuery(query);
+    		Mapper mapper = new SQLMapper(cls);
+    		List<T> listOfT = mapper.mapWithoutRelationship(rs);
+    		rs.close();
+    		stm.close();
+    		return listOfT;
+    	}catch (Exception e) {
+    		Logger.getLogger(SQLQuery.class.getName()).log(Level.SEVERE, null, e);
+		}
+    	return null;
     }
 
     @Override
     public int executeNonQuery() {
-        TTUSQLConnection cnn = null;
         try {
-            cnn = new TTUSQLConnection(connectionString);
+        	Statement stm = connection.createStatement();
+        	stm.execute(query);
+        	stm.close();
+        	return 1;
         } catch (SQLException ex) {
             Logger.getLogger(SQLQuery.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return cnn.executeNonQuery(query);
+        return -1;
     }
-    
 }

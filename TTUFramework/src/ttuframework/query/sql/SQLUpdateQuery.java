@@ -6,11 +6,9 @@
 package ttuframework.query.sql;
 
 import java.sql.Connection;
-import java.util.HashMap;
 import java.util.List;
-import ttuframework.annotation.Column;
-import ttuframework.annotation.PrimaryKey;
-import ttuframework.common.DataType;
+
+import ttuframework.mapper.Mapper;
 import ttuframework.mapper.SQLMapper;
 
 /**
@@ -19,51 +17,22 @@ import ttuframework.mapper.SQLMapper;
  */
 public class SQLUpdateQuery<T> extends SQLQuery{
     
-    public SQLUpdateQuery(Connection cnn, String connectionString, T obj) {
-        super(cnn, connectionString);
-        SQLMapper mapper = new SQLMapper(obj.getClass());
-        String tableName = mapper.getTableName();
-        List<PrimaryKey> primaryKeys = mapper.getPrimaryKeys();
-        HashMap<Column, T> listColumnValues = mapper.getColumnValues(obj);
-        
-        if (listColumnValues != null) {
-            String setStr = "";
-            String whereStr = "";
-            
-            for (Column column : listColumnValues.keySet()) {
-                String format = "{0} = {1}, ";
-                if (column.type() == DataType.NCHAR || column.type() == DataType.NVARCHAR) {
-                    format = "{0} = N'{1}', ";
-                } else if (column.type() == DataType.CHAR || column.type() == DataType.VARCHAR) {
-                    format = "{0} = '{1}', ";
-                }
-                
-                setStr += String.format(format, column.name(), listColumnValues.get(column));
-            }
-            
-            if (!setStr.isEmpty()) {
-                setStr = setStr.substring(0, setStr.length()-2);
-            }
-            
-            for (PrimaryKey primaryKey : primaryKeys) {
-                Column column = mapper.findColumn(primaryKey.name(), listColumnValues);
-                if (column != null) {
-                    String format = "{0} = {1}, ";
-                    if (column.type() == DataType.NCHAR || column.type() == DataType.NVARCHAR) {
-                        format = "{0} = N'{1}', ";
-                    } else if (column.type() == DataType.CHAR || column.type() == DataType.VARCHAR) {
-                        format = "{0} = '{1}', ";
-                    }
-                
-                    whereStr += String.format(format, column.name(), listColumnValues.get(column));
-                }
-            }
-            
-            if (!whereStr.isEmpty()) {
-                whereStr = whereStr.substring(0, whereStr.length()-2);
-                query = String.format("UPDATE {0} SET {1} WHERE {2}", tableName, setStr, whereStr);
-            }
-        }
-    }
-    
+	public SQLUpdateQuery(Connection cnn, T obj){
+		super(cnn, null);
+		Mapper mapper = new SQLMapper(obj.getClass());
+		try {
+			String tableName = mapper.getTableName();
+			String primaryKey = mapper.getPrimaryName();
+			List<String> columnNames = mapper.getColumnNames();
+	    	List<String> columnValues = mapper.getColumnValues(obj);
+	    	String value = mapper.getPrimaryValue(obj);
+	    	String setclause = "";
+	    	for(int i = 0; i < columnNames.size(); i++)
+	    		setclause += columnNames.get(i) + "=" + columnValues.get(i) + ",";
+	    	setclause = setclause.substring(0, setclause.length()-1);
+	    	query = String.format("UPDATE %s SET %s WHERE %s = '%s';",  tableName, setclause, primaryKey, value);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

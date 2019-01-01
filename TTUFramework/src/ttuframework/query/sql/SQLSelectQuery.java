@@ -7,7 +7,8 @@ package ttuframework.query.sql;
 
 import java.sql.Connection;
 import java.util.List;
-import ttuframework.annotation.Column;
+
+import ttuframework.mapper.Mapper;
 import ttuframework.mapper.SQLMapper;
 import ttuframework.query.QueryGroupBy;
 import ttuframework.query.QueryHaving;
@@ -20,43 +21,33 @@ import ttuframework.query.QueryWhere;
  */
 public class SQLSelectQuery<T> extends SQLQuery implements QueryWhere<T>, QueryGroupBy<T>, QueryHaving<T>, QueryRun<T>{
     
-    private <T> SQLSelectQuery(Connection cnn, String connectionString, Class<?> cls) {
-        super(cnn, connectionString);
-        SQLMapper mapper = new SQLMapper(cls);
-        List<Column> listColumns = mapper.getColumns();
-        
-        query = "SELECT";
-        for (Column column : listColumns) {
-            query = String.format("{0} {1},", query, column.name());
-        }
-        
-        query = query.substring(0, query.length()-1);
-        query = String.format("{0} from {1}", query, mapper.getTableName());
+    private SQLSelectQuery(Connection cnn, Class<?> cls) {
+        super(cnn, null, cls);
+        Mapper mapper = new SQLMapper(cls);
+        String tableName = mapper.getTableName();
+        query = String.format("SELECT * FROM %s ", tableName);
     }
     
-    public static QueryWhere createInstance(Connection cnn, String connectionString, Class<?> cls) {
-        return new SQLSelectQuery(cnn, connectionString, cls);
+    public static <T> QueryWhere<T> createInstance(Connection cnn, Class<?> cls) {
+        return new SQLSelectQuery<T>(cnn, cls);
     }
     
-    public QueryHaving allRow() {
+	@Override
+    public QueryGroupBy<T> addWhere(String condition) {
+        query = String.format("%s WHERE %s", query, condition);
+        System.out.println(query);
         return this;
     }
-    
-    @Override
-    public QueryHaving addWhere(String condition) {
-        query = String.format("{0} WHERE {1}", query, condition);
+
+	@Override
+    public QueryHaving<T> addGroupBy(String columnNames) {
+        query = String.format("%s GROUP BY %s", query, columnNames);
         return this;
     }
 
     @Override
-    public QueryRun addGroupBy(String columnNames) {
-        query = String.format("{0} GROUP BY {1}", query, columnNames);
-        return this;
-    }
-
-    @Override
-    public QueryGroupBy<T> addHaving(String condition) {
-        query = String.format("{0} HAVING {1}", query, condition);
+    public QueryRun<T> addHaving(String condition) {
+        query = String.format("%s HAVING %s", query, condition);
         return this;
     }
 
@@ -64,5 +55,9 @@ public class SQLSelectQuery<T> extends SQLQuery implements QueryWhere<T>, QueryG
     public List<T> run() {
         return executeQuery();
     }
-    
+
+	@Override
+	public QueryGroupBy<T> allRows() {
+		return this;
+	}
 }

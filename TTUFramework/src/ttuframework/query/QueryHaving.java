@@ -12,6 +12,6 @@ import java.util.List;
  * @author Tu Nguyen
  */
 public interface QueryHaving<T> {
-    QueryGroupBy<T> addHaving(String condition);
+    QueryRun<T> addHaving(String condition);
     List<T> run();
 }

@@ -5,10 +5,13 @@
  */
 package ttuframework.query;
 
+import java.util.List;
+
 /**
  *
  * @author Tu Nguyen
  */
 public interface QueryGroupBy<T> {
-    QueryRun<T> addGroupBy(String columnNames);
+    QueryHaving<T> addGroupBy(String columnNames);
+    List<T> run();
 }

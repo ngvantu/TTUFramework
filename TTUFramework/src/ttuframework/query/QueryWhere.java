@@ -10,5 +10,6 @@ package ttuframework.query;
  * @author Tu Nguyen
  */
 public interface QueryWhere<T> {
-    QueryHaving<T> addWhere(String condition);
+    public QueryGroupBy<T> addWhere(String condition);
+    public QueryGroupBy<T> allRows();
 }

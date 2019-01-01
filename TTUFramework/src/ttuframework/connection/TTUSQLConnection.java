@@ -5,9 +5,6 @@
  */
 package ttuframework.connection;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -28,23 +25,24 @@ import ttuframework.query.sql.SQLUpdateQuery;
  */
 public class TTUSQLConnection extends TTUConnection{
     
-    Connection connection;
-    public TTUSQLConnection(String connectionString) throws SQLException {
+    private Connection connection;
+    
+    public TTUSQLConnection(String connectionString){
         this.connectionString = connectionString;
-        this.connection = DriverManager.getConnection(connectionString);
+        this.connection = null;
     }
     
-    public TTUSQLConnection(String connectionString, String username, String password) throws SQLException {
+    public TTUSQLConnection(String connectionString, String username, String password){
         this.connectionString = connectionString;
         this.username = username;
         this.password = password;
-        this.connection = DriverManager.getConnection(connectionString, username, password);
+        this.connection = null;
     }
         
     @Override
     public void open() {
         try {
-            if (connection.isClosed()) {
+            if (connection == null || connection.isClosed()) {
                 if (username == null)
                     this.connection = DriverManager.getConnection(connectionString);
                 else this.connection = DriverManager.getConnection(connectionString, username, password);
@@ -64,46 +62,44 @@ public class TTUSQLConnection extends TTUConnection{
         }
     }
     
-    @SuppressWarnings("unchecked")
     @Override
     public <T> QueryWhere<T> select(Class<?> clazz) {
-        return SQLSelectQuery.createInstance(this.connection, this.connectionString, clazz);
+        return SQLSelectQuery.createInstance(this.connection, clazz);
     }
 
     @Override
     public <T> int insert(T obj) {
-        SQLInsertQuery query = new SQLInsertQuery(this.connection, this.connectionString, obj);
+        SQLInsertQuery<T> query = new SQLInsertQuery<T>(connection, obj);
     	return query.executeNonQuery();
     }
 
     @Override
     public <T> int update(T obj) {
-        SQLUpdateQuery query = new SQLUpdateQuery(this.connection, this.connectionString, obj);
+        SQLUpdateQuery<T> query = new SQLUpdateQuery<T>(connection, obj);
     	return query.executeNonQuery();
     }
 
     @Override
     public <T> int delete(T obj) {
-        SQLDeleteQuery query = new SQLDeleteQuery(connection, connectionString, obj);
+        SQLDeleteQuery<T> query = new SQLDeleteQuery<T>(connection, obj);
         return query.executeNonQuery();
     }
 
     @Override
-    public <T> List<T> executeQuery(String queryString) {
-        SQLQuery query = new SQLQuery(connection, connectionString, queryString);
+    public <T> List<T> executeQuery(Class<T> cls, String queryString) {
+        SQLQuery query = new SQLQuery(connection, queryString, cls);
         return query.executeQuery();
     }
 
     @Override
-    public <T> List<T> executeQueryWithOutRelationship(String queryString) {
-        SQLQuery query = new SQLQuery(connection, connectionString, queryString);
+    public <T> List<T> executeQueryWithOutRelationship(Class<T> cls, String queryString) {
+        SQLQuery query = new SQLQuery(connection, queryString, cls);
         return query.executeQueryWithOutRelationship();
     }
 
     @Override
     public int executeNonQuery(String queryString) {
-        SQLQuery query = new SQLQuery(connection, connectionString, queryString);
+        SQLQuery query = new SQLQuery(connection, queryString);
         return query.executeNonQuery();
     }
-    
 }
