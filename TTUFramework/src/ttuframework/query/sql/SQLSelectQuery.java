@@ -35,7 +35,6 @@ public class SQLSelectQuery<T> extends SQLQuery implements QueryWhere<T>, QueryG
 	@Override
     public QueryGroupBy<T> addWhere(String condition) {
         query = String.format("%s WHERE %s", query, condition);
-        System.out.println(query);
         return this;
     }
 

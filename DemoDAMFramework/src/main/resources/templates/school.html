@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Demo DAM-Framework-TTU</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<nav class="navbar navbar-default">
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <a class="navbar-brand" href="/">DAMFramework</a>
+	    </div>
+	    <ul class="nav navbar-nav">
+	      <li class="active"><a href="/">Home</a></li>
+	      <li><a href="/student">Student</a></li>
+	      <li><a href="/school">School</a></li>
+	    </ul>
+	  </div>
+	</nav>
+	
+	<div class="row">
+		<div class="col-sm-1"></div>
+		<div class="col-sm-9">
+		<table id="table-list-school" class="table table-striped table-bordered table-sm" style="cellspacing=0; width:100%">
+			<thead>
+			</thead>
+	  		<tbody>
+	  		</tbody>
+		</table>
+		</div>
+		<div class="col-sm-2">
+			<a href="/school/insert"> Insert</a>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+	$.ajax({
+		async: false,
+		type: "POST",
+		contentType: "application/json",
+		dataType: 'json',
+		url: "/school/all",
+	}).done(function(resp) {
+		var listColumns = resp.listFields;
+		var tr="<tr>";
+		for (var i = 0; i < listColumns.length; i++) 
+			tr += "<th class=\"th-sm\">" + listColumns[i] + "</th>";
+		tr += "<th class=\"th-sm\"></th>";
+		tr += "<th class=\"th-sm\"></th>";
+		tr += "</tr>";
+		$("#table-list-school thead").append(tr);
+		
+		var listSchools = resp.listSchool;
+		for(var i = 0; i < listSchools.length; i++){
+			tr="<tr>";
+				tr += "<td>" + listSchools[i].idSchool + "</td>";
+				tr += "<td>" + listSchools[i].name + "</td>";
+				tr += "<td>" + listSchools[i].address + "</td>";
+				tr += "<td><a href=\"/school/"+listSchools[i].idSchool+"/edit\">" + "edit" + "</a></td>";
+				tr += "<td><a href=\"/school/"+listSchools[i].idSchool+"/delete\">" + "delete" + "</a></td>";
+			tr += "</tr>";
+			$("#table-list-school tbody").append(tr);
+		}
+    });
+		
+	</script>	
+</body>
+</html>
